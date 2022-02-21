@@ -1,6 +1,7 @@
 from distutils.command.upload import upload
 from email.mime import image
 from django.db import models
+from embed_video.fields import EmbedVideoField
 
 # Create your models here.
 class House(models.Model):
@@ -14,6 +15,7 @@ class House(models.Model):
     beds = models.CharField(max_length=20)
     baths = models.CharField(max_length=20)
     garage = models.CharField(max_length=20)
+    video = EmbedVideoField(blank=True,null=True)
     date_added = models.DateField(auto_now_add=True)
 
     class Meta:
