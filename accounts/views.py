@@ -14,8 +14,8 @@ def registraion(request):
             name = method_dict.get('name')
             phone = method_dict.get('phone')
             email = method_dict.get('email')
-            password1 = method_dict.get('passdord1')
-            password2 = method_dict.get('passdord2')
+            password1 = method_dict.get('password1')
+            password2 = method_dict.get('password2')
             address = method_dict.get('address')
             image = request.FILES['image']
 
@@ -46,9 +46,10 @@ def login(request):
             password = request.POST.get('password')
             email.lower()
             user = authenticate(request,email=email,password=password)
+            print(user)
             if user is not None:
                 auth_login(request,user)
-                return render('/')
+                return redirect('/')
             else:
                 messages.error(request,'Invalid Email or Password')
 
