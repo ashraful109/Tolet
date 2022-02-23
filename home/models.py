@@ -1,4 +1,4 @@
-from distutils.command.upload import upload
+# from distutils.command.upload import upload
 from email.mime import image
 from django.db import models
 from embed_video.fields import EmbedVideoField
@@ -17,6 +17,7 @@ class House(models.Model):
     garage = models.CharField(max_length=20)
     video = EmbedVideoField(blank=True,null=True)
     date_added = models.DateField(auto_now_add=True)
+    is_publish = models.BooleanField(default=False)
 
     class Meta:
         ordering = ('-date_added',)
