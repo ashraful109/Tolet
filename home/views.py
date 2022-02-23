@@ -3,7 +3,7 @@
 from django.contrib import messages
 from django.shortcuts import render
 from django.core.paginator import Paginator
-from home.models import House,Slider
+from home.models import House,Slider, Inquary
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 def home(request):
@@ -36,7 +36,7 @@ def single_house(request,id):
     return render(request, 'home/single_house.html',context)
 
 @login_required
-def post_house(request):
+def post_rent_house(request):
     if request.method=="POST" and request.FILES['image']:
         name = request.POST.get('name')
         description = request.POST.get('description')
@@ -49,10 +49,25 @@ def post_house(request):
         garage = request.POST.get('garage')
         video = request.POST.get('video')
         image = request.FILES['image']
+        user = request.user
 
         House.objects.create(name=name,description=description,rent=rent,location=location,house_type=house_type,area=area,
-        beds=beds,baths=baths,garage=garage,video=video,image=image) 
+        beds=beds,baths=baths,garage=garage,video=video,image=image,user=user) 
         messages.success(request, 'Property Added Successfully')
     else:
         return render(request, 'home/post_rent_house.html')
     return render(request, 'home/post_rent_house.html')
+
+def inquary(request):
+    if request.method=="POST":
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        message = request.POST.get('message')
+        user = request.user
+        Inquary.objects.create(name=name,email=email,phone=phone,message=message)
+        messages.success(request, 'Inquary Send Successfully')
+    else:
+        return render(request, 'home/post_rent_house.html')
+    return render(request, 'home/post_rent_house.html')
+    

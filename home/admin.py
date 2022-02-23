@@ -7,5 +7,6 @@ admin.site.register(Slider)
 class HouseModelAdmin(SummernoteModelAdmin):
     summernote_fields = 'description'
 admin.site.register(House, HouseModelAdmin)
+admin.site.register(Inquary)
 
 
