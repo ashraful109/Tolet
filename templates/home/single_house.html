@@ -207,9 +207,19 @@
                 </div>
               </div>
               <div class="col-md-12 col-lg-4">
+                {% if messages %}
+                {% for msg in messages %}
+                    <p style="clor: green">{{msg}}</p>
+                    <br/>
+                {% endfor %}
+                {% endif %}
                 <div class="property-contact">
                   <form class="form-a" action="{% url 'inquary' %}" method="POST" enctype="multipart/form-data" role="form">
                     {% csrf_token %}
+                    <input type="text" name="house_owner_email" value="{{house.user.email}}" hidden>
+                    <input type="text" name="house_id" value="{{house.id}}" hidden>
+                    <input type="text" name="house_name" value="{{house.name}}" hidden>
+
                     <div class="row">
                       <div class="col-md-12 mb-1">
                         <div class="form-group">

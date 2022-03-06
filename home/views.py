@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.core.paginator import Paginator
 from home.models import House,Slider, Inquary
 from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMessage
 # Create your views here.
 def home(request):
     slider = Slider.objects.all()
@@ -60,14 +61,33 @@ def post_rent_house(request):
 
 def inquary(request):
     if request.method=="POST":
+        house_owner_email= request.POST.get('house_owner_email')
+        house_id = request.POST.get('house_id')
+        house_name = request.POST.get('house_name')
+
+
         name = request.POST.get('name')
         email = request.POST.get('email')
         phone = request.POST.get('phone')
         message = request.POST.get('message')
         user = request.user
         Inquary.objects.create(name=name,email=email,phone=phone,message=message)
+
+        email_subject = 'Rent-House Inquary Message From Tolet'
+        email_body = 'You Have an Inquary From '+name+'\n Email: '+email+'\nPhone:'+phone+'\nHe/She Send You This message:\n'+message+'\n\n For House ID:'+str(house_id)+'\nHouse Name:'+house_name+''
+        email_address = house_owner_email
+
+        email = EmailMessage(
+            email_subject,
+            email_body,
+            'noreply@tolet.com',
+            [email_address],   
+        )
+        email.send(fail_silently=False)
+
         messages.success(request, 'Inquary Send Successfully')
+        return render(request, 'home/single_house.html')
     else:
-        return render(request, 'home/post_rent_house.html')
-    return render(request, 'home/post_rent_house.html')
+        return render(request, 'home/single_house.html')
+    # return render(request, 'home/single_house.html')
     
